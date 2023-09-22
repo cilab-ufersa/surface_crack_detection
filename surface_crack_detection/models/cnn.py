@@ -46,6 +46,8 @@ model.compile(
 # training the model
 history = model.fit(
     train_data,
-    validation_data = valid_data,
+    validation_data = validation_data,
     epochs = 20
 )
+
+model.save('./cnn_model')
