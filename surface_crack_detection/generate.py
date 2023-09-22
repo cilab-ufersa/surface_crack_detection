@@ -10,6 +10,6 @@ negative_dir = Path("../dataset/Negative/")
 positive_df = generate_df(positive_dir, label = 'POSITIVE')
 negative_df = generate_df(negative_dir, label = "NEGATIVE") 
 
-# criando um único datafrem
+# criando um único dataframe
 all_df = pd.concat([positive_df, negative_df], axis = 0).sample(frac = 1.0, random_state = 1).reset_index(drop=True)
 print(all_df)
