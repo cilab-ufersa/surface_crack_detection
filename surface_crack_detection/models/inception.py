@@ -1,10 +1,11 @@
 import sys
 sys.path.append('surface_crack_detection')
-import tensorflow as tf
-import numpy as np
-import pandas as pd
-from sklearn.model_selection import train_test_split
 from utils.utils import split_data
+from tensorflow.keras.optimizers import RMSprop
+from sklearn.model_selection import train_test_split
+import pandas as pd
+import numpy as np
+import tensorflow as tf
 
 # load dataset
 dataset = pd.read_csv('dataset/dataset_final.csv')
@@ -35,11 +36,11 @@ last_output = last_layer.output
 x = tf.keras.layers.Flatten()(last_output)
 x = tf.keras.layers.Dense(1024, activation='relu')(x)
 x = tf.keras.layers.Dropout(0.2)(x)
-x = tf.keras.layers.Dense(1, 'sigmoid')(x)
+x = tf.keras.layers.Dense(1, activation='sigmoid')(x)
 model = tf.keras.Model(base_model.input, x)
 
 # compiling the model
-model.compile(optimizer=tf.keras.optimizers.RMSprop(learning_rate=0.0001), loss='binary_crossentropy',
+model.compile(optimizer=RMSprop(learning_rate=0.0001), loss='binary_crossentropy',
               metrics=['accuracy'])
 
 # showing model's summary
@@ -47,6 +48,6 @@ model.summary()
 
 # training the model
 history = model.fit(train_data, validation_data=valid_data,
-                    epochs=50, verbose=1)
+                    epochs=7, verbose=1)
 
 model.save('../models_file/inception_model.h5')
