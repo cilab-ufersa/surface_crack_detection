@@ -1,11 +1,12 @@
 # necessary libraries
-import sys 
+import sys
 sys.path.append('surface_crack_detection')
 import numpy as np
 import pandas as pd
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from utils.utils import split_data
+import pickle
 
 #load dataset
 dataset = pd.read_csv('dataset/dataset_final.csv')
@@ -50,4 +51,11 @@ history = model.fit(
     epochs = 20
 )
 
-model.save('./cnn_model')
+history = history.history
+
+# Pickle the history to file
+with open('cnn_model_history', 'wb') as f:
+    pickle.dump(history, f)
+
+# saving the model to cnn_model.h5 file
+model.save('cnn_model.h5')
