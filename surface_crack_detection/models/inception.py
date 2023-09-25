@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from utils.utils import split_data
 
 # load dataset
-dataset = pd.read_csv('dataset\dataset_final.csv')
+dataset = pd.read_csv('dataset/dataset_final.csv')
 
 # split dataset
 train_df, test_df = train_test_split(dataset.sample(
@@ -17,7 +17,7 @@ train_df, test_df = train_test_split(dataset.sample(
 train_data, valid_data, test_data = split_data(train_df, test_df)
 
 # load the path to weights file
-load_weights_file = 'surface_crack_detection\models\inception\inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5'
+load_weights_file = 'surface_crack_detection/models/inception/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5'
 
 # using the inceptionV3 architecture
 base_model = tf.keras.applications.inception_v3.InceptionV3(
