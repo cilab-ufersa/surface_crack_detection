@@ -32,14 +32,14 @@ last_layer = base_model.get_layer('mixed7')
 last_output = last_layer.output
 
 # building the model
-model = tf.keras.layers.Flatten()(last_output)
-model = tf.keras.layers.Dense(1024, activation='relu')(model)
-model = tf.keras.layers.Dropout(0.2)(model)
-model = tf.keras.layers.Dense(1, 'sigmoid')(model)
-model = tf.keras.Model(base_model.input, model)
+x = tf.keras.layers.Flatten()(last_output)
+x = tf.keras.layers.Dense(1024, activation='relu')(x)
+x = tf.keras.layers.Dropout(0.2)(x)
+x = tf.keras.layers.Dense(1, 'sigmoid')(x)
+model = tf.keras.Model(base_model.input, x)
 
 # compiling the model
-model.compile(optimizer='adam', loss='binary_crossentropy',
+model.compile(optimizer=tf.keras.optimizers.RMSprop(learning_rate=0.0001), loss='binary_crossentropy',
               metrics=['accuracy'])
 
 # showing model's summary
