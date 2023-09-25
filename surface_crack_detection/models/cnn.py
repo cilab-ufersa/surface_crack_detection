@@ -48,7 +48,14 @@ model.compile(
 history = model.fit(
     train_data,
     validation_data = validation_data,
-    epochs = 20
+    epochs = 20,
+    callbacks=[
+        tf.keras.callbacks.EarlyStopping(
+            monitor='val_loss',
+            patience=3,
+            restore_best_weights=True
+            )
+        ]
 )
 
 history = history.history
