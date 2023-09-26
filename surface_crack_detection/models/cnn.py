@@ -1,4 +1,4 @@
-# necessary libraries
+# importing necessary libraries
 import sys
 sys.path.append('surface_crack_detection')
 import numpy as np
