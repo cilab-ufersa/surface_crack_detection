@@ -63,11 +63,11 @@ history = model.fit(
 history = history.history
 
 # Pickle the history to file
-with open('cnn_model_history', 'wb') as f:
+with open('surface_crack_detection/models/historys/cnn_model_history', 'wb') as f:
     pickle.dump(history, f)
 
 # saving the model to cnn_model.h5 file
-model.save('cnn_model.h5')
+model.save('surface_crack_detection/models/trained/cnn_model.h5')
 
 # curves
 
