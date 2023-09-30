@@ -50,7 +50,7 @@ def save_dataset(paths=["dataset/Positive", "dataset/Negative"], filename="datas
 
 def split_data(train_df, test_df, image_width=227,
                 image_height=227, image_channels=255.0, 
-                classes_names=['Sem fissura', 'Com fissura'], class_mode='binary', validation_split=0.2):
+                classes_names=['Sem fissura', 'Com fissura'], class_mode='binary', validation_split=0.2, preprocess_input=None):
     
     """
     Divide o dataset em treino, validação e teste
@@ -64,6 +64,7 @@ def split_data(train_df, test_df, image_width=227,
         classes_names (list): lista com os nomes das classes
         class_mode (str): modo de classificação, binário ou categórico
         validation_split (float): proporção de imagens para validação
+        preprocess_input (None | list): preprocessa um tensor ou um array Numpy que codifica um lote de imagens
 
     Returns:
         train_data (pd.DataFrame): dataframe com os dados das imagens de treino
@@ -76,9 +77,9 @@ def split_data(train_df, test_df, image_width=227,
 
 
     train_gen = tf.keras.preprocessing.image.ImageDataGenerator(
-        rescale=1./image_channels, validation_split=validation_split)
+        rescale=1./image_channels, validation_split=validation_split, preprocessing_function=preprocess_input)
     test_gen = tf.keras.preprocessing.image.ImageDataGenerator(
-        rescale=1./image_channels)
+        rescale=1./image_channels, preprocessing_function=preprocess_input)
 
     train_data = train_gen.flow_from_dataframe(
         train_df,
