@@ -58,6 +58,19 @@ validation_generator = validation_datagen.flow_from_directory(
     subset = 'validation'
 )
 
+test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1./255)
+test_generator = test_datagen.flow_from_dataframe(
+        test_df,
+        x_col='Filepath',
+        y_col='Label',
+        target_size= (150, 150),
+        color_mode='rgb',
+        class_mode= 'binary',
+        batch_size=32,
+        shuffle=False,
+        seed=42,
+    )
+
 # creating VGG16 model's instances from pre-trained weights
 local_wights_file = "surface_crack_detection/vgg16/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5"
 pre_trained_model = VGG(input_shape = (150, 150, 3), include_top = False, weights = None)
@@ -141,13 +154,13 @@ plt.legend(["Training Loss", "Validation Loss"])
 plt.savefig("surface_crack_detection/models/figures/vgg-curves.jpg")
 
 # testing the model
-model_prediction = model_vgg.predict(test_data)
+model_prediction = model_vgg.predict(test_generator)
 
 # testing
 predictions = np.squeeze(model_prediction >= 0.5).astype(np.int32)
 predictions = predictions.reshape(-1, 1)
 
-results = model_vgg.evaluate(test_data)
+results = model_vgg.evaluate(test_generator)
 
 # assigning the results into loss and accuracy
 loss = results[0]
@@ -158,8 +171,8 @@ print(f"Model's accuracy: {(accuracy*100):0.2f}%")
 print(f"Model's loss: {(loss):0.2f}%")
 
 # creating the confusion matrix
-matrix = confusion_matrix(test_data.labels, predictions)
-classifications = classification_report(test_data.labels, predictions, target_names = ["WITHOUT_CRACK", "WITH_CRACK"])
+matrix = confusion_matrix(test_generator.labels, predictions)
+classifications = classification_report(test_generator.labels, predictions, target_names = ["WITHOUT_CRACK", "WITH_CRACK"])
 display = ConfusionMatrixDisplay(matrix)
 
 # ploting the Matrix
