@@ -20,7 +20,7 @@ train_df, test_df = train_test_split(
 train_data, valid_data, test_data = split_data(train_df, test_df)
 
 # load the path to weights file
-load_weights_file = 'surface_crack_detection/models/inception/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5'
+load_weights_file = 'surface_crack_detection/inception/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5'
 
 # using the inceptionV3 architecture
 base_model = tf.keras.applications.inception_v3.InceptionV3(
@@ -64,14 +64,14 @@ history = model.fit(train_data, validation_data=valid_data,
 
 # pickle the history to file
 with open('surface_crack_detection/models/historys/inception_model_history.h5', 'wb',) as f:
-    pickle.dumb(history, f)
+    pickle.dump(history, f)
 
 # saving the model to inception_model.h5 file
 model.save('surface_crack_detection/models/trained/inception_model.h5')
 
 # curves
 acc = history.history['accuracy']
-val_acc = history.history['val_history']
+val_acc = history.history['val_accuracy']
 loss = history.history['loss']
 val_loss = history.history['val_loss']
 
@@ -88,7 +88,7 @@ plt.legend(['Training accuracy', 'Validation accuracy'])
 plt.subplot(1, 2, 2)
 plt.plot(loss)
 plt.plot(val_loss)
-plt.title('Accuracy')
+plt.title('Accuracy over time')
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.legend(['Training loss', 'Validation loss'])
