@@ -28,14 +28,13 @@ VGG = tf.keras.applications.VGG16
 
 #load dataset
 dataset = pd.read_csv('dataset/dataset_final.csv')
-
+                                                                                                                                                                                                                                                            
 #split dataset
 train_df, test_df = train_test_split(
     dataset.sample(frac = 1.0, random_state=42), train_size=0.80, random_state=42)
 
 # train, validation and test datas
 train_data, validation_data, test_data = split_data(train_df, test_df)
- 
 
 # train and validation generators
 train_datagen = ImageDataGenerator(rescale = 1./255, validation_split = 0.3)
@@ -58,6 +57,7 @@ validation_generator = validation_datagen.flow_from_directory(
     subset = 'validation'
 )
 
+# test dataframe iterator
 test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1./255)
 test_generator = test_datagen.flow_from_dataframe(
         test_df,
