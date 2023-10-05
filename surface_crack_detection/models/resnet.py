@@ -27,7 +27,7 @@ train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
     validation_split=0.3, preprocessing_function=preprocess_input)
 train_generator = train_datagen.flow_from_directory(
     'dataset',
-    target_size=(160, 150),
+    target_size=(150, 150),
     batch_size=64,
     class_mode='binary',
     shuffle=True,
