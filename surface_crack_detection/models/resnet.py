@@ -1,13 +1,14 @@
+# importing necessary libraries
 import sys
 sys.path.append('surface_crack_detection')
 from utils.utils import split_data
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
 from sklearn.model_selection import train_test_split
-import pickle
-import matplotlib.pyplot as plt
-import pandas as pd
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 import tensorflow as tf
+import pickle
 
 # load dataset
 dataset = pd.read_csv('dataset/dataset_final.csv')
@@ -16,147 +17,101 @@ dataset = pd.read_csv('dataset/dataset_final.csv')
 train_df, test_df = train_test_split(dataset.sample(
     frac=1.0, random_state=42), train_size=0.80, random_state=42)
 
+# input preprocessing
 preprocess_input = tf.keras.applications.resnet.preprocess_input
 
-# train, valid and test data
+# train, validation and test datas
 train_data, valid_data, test_data = split_data(
     train_df, test_df, image_channels=1.0, preprocess_input=preprocess_input)
 
-# train, validation and test generator
-train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
-    validation_split=0.3, preprocessing_function=preprocess_input)
-train_generator = train_datagen.flow_from_directory(
-    'dataset',
-    target_size=(150, 150),
-    batch_size=64,
-    class_mode='binary',
-    shuffle=True,
-    subset='training'
-)
-
-validation_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
-    validation_split=0.3, preprocessing_function=preprocess_input)
-validation_generator = validation_datagen.flow_from_directory(
-    'dataset',
-    target_size=(150, 150),
-    batch_size=64,
-    class_mode='binary',
-    shuffle=True,
-    subset='validation',
-)
-
-test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
-    validation_split=0.3, preprocessing_function=preprocess_input)
-test_generator = test_datagen.flow_from_dataframe(
-    test_df,
-    x_col='Filepath',
-    y_col='Label',
-    target_size=(150, 150),
-    batch_size=32,
-    color_mode='rgb',
-    class_mode='binary',
-    shuffle=False,
-    seed=42
-)
-
-# train, validation and test data
-train_data, valid_data, test_data = split_data(
-    train_df, test_df, image_channels=1.0, preprocess_input=preprocess_input)
-
-# using the ResNet50 architecture
-pre_trained_model = tf.keras.applications.resnet50.ResNet50(
-    include_top=False, weights='imagenet', input_shape=(150, 150, 3), pooling='avg')
-
-# using this class at the end of an epoch
-class myCallback(tf.keras.callbacks.Callback):
+class MyCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs={}):
         if (logs.get('accuracy') > 0.999):
+            print('\nReached 99.9% accuracy sp cancelling training')
             self.model.stop_training = True
 
 
-callbacks = myCallback()
+callbacks = MyCallback()
+
+# resnet50 architecture
+pre_trained_model = tf.keras.applications.resnet.ResNet50(
+    include_top=False, weights='imagenet', input_shape=(227, 227, 3), pooling='avg')
 
 for layer in pre_trained_model.layers:
     layer.trainable = False
 
 # building the model
 x = pre_trained_model.output
-x = tf.keras.layers.Dense(512, activation='relu')(x)
-x = tf.keras.layers.Dropout(0.2)(x)
-x = tf.keras.layers.Dense(256, activation='relu')(x)
-x = tf.keras.layers.Dropout(0.2)(x)
-x = tf.keras.layers.Dense(128, activation='relu')(x)
-x = tf.keras.layers.Dropout(0.2)(x)
-x = tf.keras.layers.Dense(64, activation='relu')(x)
-x = tf.keras.layers.Dropout(0.2)(x)
+x = tf.keras.layers.Dense(1024, activation='relu')(x)
+x = tf.keras.layers.Dropout(0.5)(x)
 output = tf.keras.layers.Dense(5, activation='softmax')(x)
 
-model = tf.keras.Model(pre_trained_model.input, output)
+model = tf.keras.Model(inputs=pre_trained_model.input, outputs=output)
 
-# compiling the model
-model.compile(loss='sparse_categorical_crossentropy',
-              optimizer='Adam', metrics=['accuracy'])
-
-# showing model's summary
+# showing up model's summary
 model.summary()
 
+steps_per_epoch_training = len(train_data)
+steps_per_epoch_validation = len(valid_data)
+
+# compiling the model
+model.compile(optimizer="adam",
+              loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
 # training the model
-history = model.fit(train_generator, validation_data=validation_generator,
-                    epochs=10, verbose=1, callbacks=[callbacks])
+history = model.fit(train_data, validation_data=valid_data, epochs=30, verbose=1,
+                    steps_per_epoch=steps_per_epoch_training, validation_steps=steps_per_epoch_validation, callbacks=[callbacks])
+
+history = history.history
 
 # pickle the history to file
-with open('surface_crack_detection/models/historys/resnet_model_history.h5', 'wb') as f:
+with open('surface_crack_detection/models/historys/resnet50_model_history.h5', 'wb') as f:
     pickle.dump(history, f)
 
-# saving the model to inception_model.h5 file
-model.save('surface_crack_detection/models/trained/resnet_model.h5')
+# saving the model
+model.save('surface_crack_detection/models/trained/resnet50_model.h5')
 
 # curves
-acc = history.history['accuracy']
-val_acc = history.history['val_accuracy']
-loss = history.history['loss']
-val_loss = history.history['val_loss']
+acc = history['accuracy']
+val_acc = history['val_accuracy']
+loss = history['loss']
+val_loss = history['val_loss']
 
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(10, 4))
 
 plt.subplot(1, 2, 1)
 plt.plot(acc)
 plt.plot(val_acc)
-plt.title('Accuracy')
-plt.xlabel('Epochs')
-plt.ylabel('Accuracy')
+plt.title('Training and validation accuracy')
 plt.legend(['Training accuracy', 'Validation accuracy'])
 
 plt.subplot(1, 2, 2)
 plt.plot(loss)
 plt.plot(val_loss)
-plt.title('Accuracy over time')
-plt.xlabel('Epochs')
-plt.ylabel('Loss')
+plt.title('Training and validation loss')
 plt.legend(['Training loss', 'Validation loss'])
 
 # saving the curves
-plt.savefig('surface_crack_detection/models/figures/resnet_model.jpg')
+plt.savefig('surface_crack_detection/models/figures/resnet50_curves.jpg')
 
 # making predictions
-model_predictions = model.predict(test_generator)
+model_predictions = model.predict(test_data)
 predictions = np.squeeze(model_predictions >= 0.5).astype(np.int32)
-predictions = predictions.reshape(-1, 1)
+predictions.reshape(-1, 1)
 
-results = model.evaluate(test_generator)
+# testing the model
+results = model.evaluate(test_data)
 
-# assigning the results into loss and accuracy
 loss = results[0]
 accuracy = results[1]
 
-# showing up the results
-print(f"Model's accuracy: {(accuracy*100):0.2f}%")
-print(f"Model's loss: {(loss):0.2f}%")
+print(f"\nmodel's accuracy: {(accuracy*100):0.2f}%")
+print(f"\nmodel's loss: {(loss*100):0.2f}%")
 
-# creating the confusion matrix
-matrix = confusion_matrix(test_generator.labels, predictions)
-classifications = classification_report(
-    test_generator.labels, predictions, target_names=['WITHOUT_CRACK', 'WITH_CRACK'])
+# creating confunsion matrix
+matrix = confusion_matrix(test_data.labels, predictions)
+classification = classification_report(
+    test_data.labels, predictions, target_names=['WITHOUT_CRACK', 'WITH_CRACK'])
 display = ConfusionMatrixDisplay(matrix)
 
 display.plot()
@@ -164,10 +119,11 @@ display.plot()
 plt.xticks(ticks=np.arange(2), labels=['WITHOUT_CRACK', 'WITH_CRACK'])
 plt.yticks(ticks=np.arange(2), labels=['WITHOUT_CRACK', 'WITH_CRACK'])
 
-plt.xlabel('Predict')
 plt.ylabel('Actual')
-plt.title('Confustion Matrix')
+plt.xlabel('Predict')
+
+plt.title('Confustion matrix')
 
 # saving the confusion matrix
 plt.savefig(
-    'surface_crack_detection/models/figures/resnet_matrix_confusion.jpg')
+    'surface_crack_detection/models/figures/resnet50_confusion_matrix.jpg')
