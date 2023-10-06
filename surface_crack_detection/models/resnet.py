@@ -55,7 +55,7 @@ steps_per_epoch_training = len(train_data)
 steps_per_epoch_validation = len(valid_data)
 
 # compiling the model
-model.compile(optimizer="adam",
+model.compile(optimizer=tf.keras.optimizers.RMSprop(learning_rate=0.0001),
               loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 # training the model
@@ -65,7 +65,7 @@ history = model.fit(train_data, validation_data=valid_data, epochs=30, verbose=1
 history = history.history
 
 # pickle the history to file
-with open('surface_crack_detection/models/historys/resnet50_model_history.h5', 'wb') as f:
+with open('surface_crack_detection/models/historys/resnet50_model_history', 'wb') as f:
     pickle.dump(history, f)
 
 # saving the model
