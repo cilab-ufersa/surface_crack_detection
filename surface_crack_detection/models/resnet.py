@@ -96,8 +96,7 @@ plt.savefig('surface_crack_detection/models/figures/resnet50_curves.jpg')
 
 # making predictions
 model_predictions = model.predict(test_data)
-predictions = np.squeeze(model_predictions >= 0.5).astype(np.int32)
-predictions.reshape(-1, 1)
+predictions = np.argmax(model_predictions, axis=-1)
 
 # testing the model
 results = model.evaluate(test_data)
