@@ -64,7 +64,7 @@ history = model.fit(train_data, validation_data=valid_data,
                     epochs=7, verbose=1, callbacks=[callbacks])
 
 # pickle the history to file
-with open('surface_crack_detection/models/historys/inception_model_history.h5', 'wb',) as f:
+with open('surface_crack_detection/models/historys/inception_model_history', 'wb',) as f:
     pickle.dump(history, f)
 
 # saving the model to inception_model.h5 file

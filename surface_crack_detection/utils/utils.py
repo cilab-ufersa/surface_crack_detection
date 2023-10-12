@@ -64,6 +64,7 @@ def split_data(train_df, test_df, image_width=227,
         classes_names (list): lista com os nomes das classes
         class_mode (str): modo de classificação, binário ou categórico
         validation_split (float): proporção de imagens para validação
+        preprocess_input (None | list): preprocessa um tensor ou um array Numpy que codifica um lote de imagens
 
     Returns:
         train_data (pd.DataFrame): dataframe com os dados das imagens de treino
