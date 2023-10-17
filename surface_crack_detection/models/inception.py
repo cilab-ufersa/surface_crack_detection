@@ -25,7 +25,8 @@ load_weights_file = 'surface_crack_detection/inception/inception_v3_weights_tf_d
 
 # using the inceptionV3 architecture
 base_model = tf.keras.applications.inception_v3.InceptionV3(
-    include_top=False, input_shape=(227, 227, 3), weights=load_weights_file)
+    include_top=False, input_shape=(227, 227, 3), weights=None)
+base_model.load_weights(load_weights_file)
 
 # using this class at the end of an epoch
 class myCallback(tf.keras.callbacks.Callback):
@@ -63,6 +64,8 @@ model.summary()
 history = model.fit(train_data, validation_data=valid_data,
                     epochs=7, verbose=1, callbacks=[callbacks])
 
+history = history.history
+
 # pickle the history to file
 with open('surface_crack_detection/models/historys/inception_model_history', 'wb',) as f:
     pickle.dump(history, f)
@@ -71,17 +74,17 @@ with open('surface_crack_detection/models/historys/inception_model_history', 'wb
 model.save('surface_crack_detection/models/trained/inception_model.h5')
 
 # curves
-acc = history.history['accuracy']
-val_acc = history.history['val_accuracy']
-loss = history.history['loss']
-val_loss = history.history['val_loss']
+acc = history['accuracy']
+val_acc = history['val_accuracy']
+loss = history['loss']
+val_loss = history['val_loss']
 
 plt.figure(figsize=(10, 6))
 
 plt.subplot(1, 2, 1)
 plt.plot(acc)
 plt.plot(val_acc)
-plt.title('Accuracy')
+plt.title('Training and validation accuracy')
 plt.xlabel('Epochs')
 plt.ylabel('Accuracy')
 plt.legend(['Training accuracy', 'Validation accuracy'])
@@ -89,7 +92,7 @@ plt.legend(['Training accuracy', 'Validation accuracy'])
 plt.subplot(1, 2, 2)
 plt.plot(loss)
 plt.plot(val_loss)
-plt.title('Accuracy over time')
+plt.title('Training and validation loss')
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.legend(['Training loss', 'Validation loss'])
