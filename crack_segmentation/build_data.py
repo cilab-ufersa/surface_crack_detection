@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 from sklearn.model_selection import train_test_split
 from imutils import paths
-from classes.Config_class import Config
+from classes.config import Config
 from skimage.transform import resize
 
 from subroutines.hdf5 import WriterMasks
