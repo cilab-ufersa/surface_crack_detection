@@ -1,5 +1,4 @@
 import sys
-import os
 import numpy as np
 import h5py
 import matplotlib.pyplot as plt
@@ -13,10 +12,10 @@ def Visualize_Predictions(args, predictions, threshold=0.5):
 
     sys.path.append(args["main"])
 
-    from subroutlines.loss_metrics import DilateMask
-    from subroutlines.loss_metrics import Recall_np
-    from subroutlines.loss_metrics import Precision_np
-    from subroutlines.loss_metrics import F1_score_np
+    from subroutines.loss_metrics import DilateMask
+    from subroutines.loss_metrics import Recall_np
+    from subroutines.loss_metrics import Precision_np
+    from subroutines.loss_metrics import F1_score_np
 
     # Load database with images and masks
     db = h5py.File(args['EVAL_HDF5'], 'r+')
@@ -52,6 +51,7 @@ def Visualize_Predictions(args, predictions, threshold=0.5):
         recall = Recall_np(db["labels"][ii], predictions[ii])
         precision = Precision_np(y_true_Precision, predictions[ii])
         f1_score = F1_score_np(recall, precision)
+        
         # Format metrics
         recall = int(round(recall, 2)*100)
         precision = int(round(precision, 2)*100)
