@@ -1,6 +1,8 @@
+import sys
+from classes.config import Config
 from subroutines.hdf5 import GeneratorMask
-folder = {}
 
+folder = {}
 folder['initial'] = '/content/drive/MyDrive/'
 folder['main'] = folder['initial'] + 'segmentation/'
 
@@ -16,7 +18,6 @@ INIT_LR = cnf.learning_rate
 N_FILTERS = cnf.N_FILTERS
 info = cnf.info
 mode = cnf.mode
-
 
 if mode == 'train':
     from keras.preprocessing.image import ImageDataGenerator
@@ -66,10 +67,6 @@ if mode == 'train':
             json_file.write(model_json)
     except:
         pass
-
-        # Define whether the whole model or the weights only will be saved from the ModelCheckpoint
-        # Refer to the documentation of ModelCheckpoint for extra details
-        # https://keras.io/api/callbacks/model_checkpoint/
 
     temp = '{}_{}'.format(info, args['counter']) + "_epoch_{epoch}_" + \
         args['metric_to_plot'] + "_{val_" + args['metric_to_plot'] + ":.3f}.h5"
@@ -125,8 +122,5 @@ elif mode == 'evaluate':
     cnf.check_folder_exists(predictions_folder)
 
     # Visualize  predictions
-    # Create a plot with original image, ground truth and prediction
-    # Show the metrics for the prediction
-    # Output will be stored in a subfolder of the predictions folder (args['predictions_subfolder'])
     from subroutines.visualize_predictions import Visualize_Predictions
     Visualize_Predictions(args, predictions)
