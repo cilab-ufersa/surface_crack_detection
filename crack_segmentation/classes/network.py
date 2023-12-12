@@ -14,6 +14,14 @@ class Network:
         self.loss = loss
         self.metrics = metrics
 
+    def add_regularization_function(self, args, model):
+        if (self.args['regularization'] != None):
+            from model import add_regularization
+
+            model = add_regularization(model, self.args['regularization'])
+
+        return model
+
     def define_network(self):
         sys.path.append(self.args['main'])
 
