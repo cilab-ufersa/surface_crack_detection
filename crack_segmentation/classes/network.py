@@ -23,7 +23,7 @@ class Network:
             model = unet(self.IMAGE_DIMS, num_filters=self.N_FILTERS)
 
         elif 'sm' in self.args['model']:
-            #import segmentation-model as sm
+            import segmentation_models as sm
 
             _, model_to_use, BACKBONE = self.args["model"].split(
                 '_')  # ['sm', 'FPN', 'mobilenet']
