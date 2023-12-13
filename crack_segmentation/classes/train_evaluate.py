@@ -1,10 +1,15 @@
 import sys
+import os
 from classes.config import Config
 from subroutines.hdf5 import GeneratorMask
 
 folder = {}
-folder['initial'] = '/content/drive/MyDrive/'
-folder['main'] = folder['initial'] + 'segmentation/'
+folder['initial'] = 'crack_segmentation/'
+folder['main'] = folder['initial'] + ''
+
+# if folder['main'] == '', then the current working directory will be used
+if folder['main'] == '':
+    folder['main'] = os.getcwd()
 
 sys.path.append(folder["main"])
 
