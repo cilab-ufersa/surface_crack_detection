@@ -82,17 +82,11 @@ class Config:
         for f in folders:
             self.check_folder_exists(f)
 
-        # salvando os arquivos hdf5 em diferentes diretórios
-        temp = '{}_{}_{}_{}/'.format(
-            self.info, self.IMAGE_DIMS[0], self.IMAGE_DIMS[1], self.IMAGE_DIMS[2]
-        )
-        self.check_folder_exists(self.args['hdf5'] + temp)
-
         # definindo as saídas dos arquivos hdf5
-        self.args['TRAIN_HDF5'] = self.args['hdf5'] + temp + 'train.hdf5'
-        self.args['VAL_HDF5'] = self.args['hdf5'] + temp + 'valid.hdf5'
+        self.args['TRAIN_HDF5'] = self.args['hdf5'] + 'train.hdf5'
+        self.args['VAL_HDF5'] = self.args['hdf5'] + 'valid.hdf5'
 
-        self.args['EVAL_HDF5'] = self.args['hdf5'] + temp + 'valid.hdf5'
+        self.args['EVAL_HDF5'] = self.args['hdf5'] + 'valid.hdf5'
 
         # definindo os caminhos onde das imagens e máscaras
         self.args['images'] = self.args['dataset'] + \
