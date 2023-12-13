@@ -9,7 +9,7 @@ class Config:
         self.info = 'crack_detection'
         self.IMAGE_DIMS = (224, 224, 3)
         self.batch_size = 4
-        self.epochs = 3
+        self.epochs = 100
         self.learning_rate = 0.0005
 
         # The parameters of the configuration used will be stored in the dictionary args
