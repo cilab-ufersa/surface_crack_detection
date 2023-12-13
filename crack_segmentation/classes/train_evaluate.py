@@ -1,7 +1,6 @@
 import sys
 import os
-from classes.config import Config
-from subroutines.hdf5 import GeneratorMask
+from config import Config
 
 folder = {}
 folder['initial'] = 'crack_segmentation/'
@@ -24,13 +23,15 @@ N_FILTERS = cnf.N_FILTERS
 info = cnf.info
 mode = cnf.mode
 
+from subroutines.hdf5.generator_mask import GeneratorMask
+
 if mode == 'train':
     from keras.preprocessing.image import ImageDataGenerator
     from keras.callbacks import ModelCheckpoint
     from keras.callbacks import CSVLogger
 
-    from subroutines.callbacks import EpochCheckpoint
-    from subroutines.callbacks import TrainingMonitor
+    from subroutines.callbacks.epoch_check_point import EpochCheckpoint
+    from subroutines.callbacks.training_monitor import TrainingMonitor
     from subroutines.visualize_model import visualize_model
     from metrics import Metrics
     from loss import Loss
@@ -40,9 +41,8 @@ if mode == 'train':
     metrics = Metrics(args).define_Metrics()
     loss = Loss(args).define_Loss()
     opt = Optimizer(args, INIT_LR).define_Optimizer()
-    model = Network(
-        args, IMAGE_DIMS, N_FILTERS, BS, INIT_LR, opt, loss, metrics
-    ).define_network()
+    model = Network(args, IMAGE_DIMS, N_FILTERS, BS, INIT_LR,
+                    opt, loss, metrics).define_network()
 
     try:
         visualize_model(model, args['architecture'], args['summary'])

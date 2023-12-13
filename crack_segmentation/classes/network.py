@@ -1,4 +1,5 @@
 import sys
+import os
 
 
 class Network:
@@ -31,6 +32,7 @@ class Network:
             model = unet(self.IMAGE_DIMS, num_filters=self.N_FILTERS)
 
         elif 'sm' in self.args['model']:
+            os.environ['SM_FRAMEWORK'] = 'tf.keras'
             import segmentation_models as sm
 
             _, model_to_use, BACKBONE = self.args["model"].split(
@@ -66,6 +68,8 @@ class Network:
                     # Dropout=self.args['dropout']
                 )
 
+            model = self.add_regularization_function(self.args, model)
+            
         elif self.args['model'] == 'Deeplabv3':
             sys.path.append(self.args["main"] + 'networks/')
 

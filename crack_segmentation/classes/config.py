@@ -5,7 +5,7 @@ import sys
 class Config:
     def __init__(self, working_folder):
         self.working_folder = working_folder
-        self.mode = 'build_data'  # 'train', 'evaluate' or 'build_data'
+        self.mode = 'train'  # 'train', 'evaluate' or 'build_data'
         self.info = 'crack_detection'
         self.IMAGE_DIMS = (224, 224, 3)
         self.batch_size = 4
@@ -27,7 +27,7 @@ class Config:
         # Parameters to define for the configuration of Unet
         self.N_FILTERS = 64
         self.args['kernel_init'] = 'he_normal'
-        self.args['encoder_weights'] = None  # None or 'imagenet'
+        self.args['encoder_weights'] = 'imagenet'  # None or 'imagenet'
 
         self.args['loss'] = 'WCE'
         if self.args['loss'] == 'Focal_Loss':
