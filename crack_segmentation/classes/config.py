@@ -5,7 +5,7 @@ import sys
 class Config:
     def __init__(self, working_folder):
         self.working_folder = working_folder
-        self.mode = 'train'  # 'train', 'evaluate' or 'build_data'
+        self.mode = 'evaluate'  # 'train', 'evaluate' or 'build_data'
         self.info = 'crack_detection'
         self.IMAGE_DIMS = (224, 224, 3)
         self.batch_size = 4
@@ -15,7 +15,7 @@ class Config:
         # The parameters of the configuration used will be stored in the dictionary args
         self.args = {}
         # 'Deeplabv3', 'Unet', 'DeepCrack', 'sm_Unet_mobilenet'
-        self.args["model"] = "sm_Unet_mobilenet"
+        self.args["model"] = "sm_FPN_inceptionv3"
         self.args['regularization'] = 0.001
         self.args['optimizer'] = 'Adam'  # 'SGD' or 'Adam' or 'RMSprop'
         self.args['aug'] = False  # True or False
@@ -160,8 +160,8 @@ class Config:
                 '{}_summary_{}.txt'.format(self.info, self.args['counter'])
 
         elif self.mode == 'evaluate':
-            self.args['counter'] = 1
-            self.args['pretrained_filename'] = 'crack_detection_1_epoch_2_F1_score_dil_0.111.h5'
+            self.args['counter'] = 2
+            self.args['pretrained_filename'] = 'crack_detection_2_epoch_9_F1_score_dil_0.830.h5'
             self.args['predictions_subfolder'] = '{}{}/'.format(
                 self.args['predictions'], self.args['pretrained_filename'])
             self.args['predictions_dilate'] = True
