@@ -161,7 +161,7 @@ class Config:
 
         elif self.mode == 'evaluate':
             self.args['counter'] = 2
-            self.args['pretrained_filename'] = 'crack_detection_2_epoch_9_F1_score_dil_0.830.h5'
+            self.args['pretrained_filename'] = 'crack_detection_2_epoch_9_F1_score_dil_0.830'
             self.args['predictions_subfolder'] = '{}{}/'.format(
                 self.args['predictions'], self.args['pretrained_filename'])
             self.args['predictions_dilate'] = True
