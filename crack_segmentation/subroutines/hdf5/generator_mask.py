@@ -78,4 +78,4 @@ class GeneratorMask:
                 epochs += 1
 
     def close(self):
-        self.db.clos()
+        self.db.close()
