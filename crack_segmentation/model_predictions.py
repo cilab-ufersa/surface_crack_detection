@@ -25,6 +25,15 @@ model.load_weights(
 
 
 def segmentation(path):
+    """
+    Gera predições de saída para as amostras de entrada
+    
+    Args:
+        path (str): recebe o caminho das imagens para segmentação
+
+    Returns:
+        y_pred (numpy array): array contendo as predições
+    """
     img = cv2.imread(path)
     img = cv2.resize(img, (224, 224))
     img = img / 255.0
