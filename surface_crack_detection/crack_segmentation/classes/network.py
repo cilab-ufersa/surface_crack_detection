@@ -17,7 +17,7 @@ class Network:
 
     def add_regularization_function(self, args, model):
         if (self.args['regularization'] != None):
-            from model import add_regularization
+            from networks import add_regularization
 
             model = add_regularization(model, self.args['regularization'])
 
@@ -27,7 +27,7 @@ class Network:
         sys.path.append(self.args['main'])
 
         if self.args['model'] == 'unet':
-            from model import unet
+            from networks import unet
 
             model = unet(self.IMAGE_DIMS, num_filters=self.N_FILTERS)
 
@@ -38,10 +38,8 @@ class Network:
             _, model_to_use, BACKBONE = self.args["model"].split(
                 '_')  # ['sm', 'FPN', 'mobilenet']
 
-            # definindo os parâmetros da rede
             num_classes = 1
             activation = 'sigmoid'
-            # None or 'imagenet'
             encoder_weights = self.args['encoder_weights']
 
             if model_to_use == 'FPN':
@@ -73,7 +71,7 @@ class Network:
         elif self.args['model'] == 'Deeplabv3':
             sys.path.append(self.args["main"] + 'networks/')
 
-            from model import Deeplabv3
+            from network import Deeplabv3
 
             weights = 'pascal_voc'
             input_shape = self.IMAGE_DIMS

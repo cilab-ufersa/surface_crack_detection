@@ -1,9 +1,7 @@
 import numpy as np
 import tensorflow as tf
 
-# camada convolucional
 def conv2D_block(input_tensor, num_filters):
-  # primeira camada
   x = tf.keras.layers.Conv2D(
       filters=num_filters,
       kernel_size=(3,3),
@@ -14,7 +12,6 @@ def conv2D_block(input_tensor, num_filters):
   x = tf.keras.layers.BatchNormalization()(x)
   x = tf.keras.layers.Activation("relu")(x)
 
-  # segunda camada
   x = tf.keras.layers.Conv2D(
       filters=num_filters,
       kernel_size=(3,3),
@@ -27,7 +24,6 @@ def conv2D_block(input_tensor, num_filters):
 
   return x
 
-# camada codificadora
 def encoder_block(input_img, num_filters, dropout):
   x = conv2D_block(input_img, num_filters)
   p = tf.keras.layers.MaxPooling2D((2, 2))(x)
@@ -35,7 +31,6 @@ def encoder_block(input_img, num_filters, dropout):
 
   return x, p
 
-# camada decodificadora
 def decoder_block(inputs, skip, num_filters):
   x = tf.keras.layers.Conv2DTranspose(
       filters=num_filters,
@@ -49,7 +44,6 @@ def decoder_block(inputs, skip, num_filters):
 
   return x
 
-# modelo unet
 def unet(input_shape, num_filters=16, dropout=0.25):
   input_image = tf.keras.layers.Input(input_shape)
 

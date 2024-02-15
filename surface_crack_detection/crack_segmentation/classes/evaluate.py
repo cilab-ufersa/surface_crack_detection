@@ -43,7 +43,7 @@ class LoadModel:
             # If pretrained Deeplabv3 will be loaded, import the Deeplabv3 module
             if self.args["model"] == 'Deeplabv3':
                 sys.path.append(self.args["main"] + 'networks/')
-                from model import Deeplabv3
+                from network import Deeplabv3
 
             # load json and create model
             json_file = open(self.args['model_json'], 'r')

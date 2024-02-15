@@ -15,14 +15,14 @@ class Config:
         # The parameters of the configuration used will be stored in the dictionary args
         self.args = {}
         # 'Deeplabv3', 'Unet', 'DeepCrack', 'sm_Unet_mobilenet'
-        self.args["model"] = "sm_FPN_inceptionv3"
+        self.args["model"] = "sm_Unet_mobilenet"
         self.args['regularization'] = 0.001
         self.args['optimizer'] = 'Adam'  # 'SGD' or 'Adam' or 'RMSprop'
         self.args['aug'] = False  # True or False
         # dropout: None or insert a value (e.g. 0.5)
         self.args['dropout'] = 0.5
         self.args['batchnorm'] = True  # True or False
-        self.args['save_model_weights'] = 'weights'  # 'model' or 'weights'
+        self.args['save_model_weights'] = 'model'  # 'model' or 'weights'
 
         # Parameters to define for the configuration of Unet
         self.N_FILTERS = 64
@@ -42,7 +42,7 @@ class Config:
         self.args['start_epoch'] = 0
         self.args['every'] = 5
 
-        self.args['metric_to_plot'] = 'F1_score_dil'
+        self.args['metric_to_plot'] = 'F1_score'
 
         self.args['binarize'] = True  # True or False
 
@@ -59,18 +59,16 @@ class Config:
         self.args['main'] = self.working_folder
         self.args['dataset'] = self.args['main'] + 'dataset/'
 
-        # diretório para salvar as saídas
         self.args['output'] = self.args['main'] + 'output/'
-        # a saída será salva no formato hdf5
+        
         self.args['hdf5'] = self.args['output'] + 'hdf5/'
-        # diretório onde o modelo será salvo
+        
         self.args['checkpoints'] = self.args['output'] + 'checkpoints/'
-        # diretório onde os pesos serão salvo
+        
         self.args['weights'] = self.args['output'] + 'weights/'
         self.args['model_json_folder'] = self.args['output'] + 'model_json/'
         self.args['predictions'] = self.args['output'] + 'predictions/'
 
-        # criando os diretórios
         folders = [
             self.args['hdf5'],
             self.args['checkpoints'],
@@ -82,13 +80,11 @@ class Config:
         for f in folders:
             self.check_folder_exists(f)
 
-        # definindo as saídas dos arquivos hdf5
         self.args['TRAIN_HDF5'] = self.args['hdf5'] + 'train.hdf5'
         self.args['VAL_HDF5'] = self.args['hdf5'] + 'valid.hdf5'
 
         self.args['EVAL_HDF5'] = self.args['hdf5'] + 'valid.hdf5'
 
-        # definindo os caminhos onde das imagens e máscaras
         self.args['images'] = self.args['dataset'] + \
             '{}_{}_images/'.format(self.info, self.IMAGE_DIMS[0])
         self.args['masks'] = self.args['dataset'] + \
@@ -146,7 +142,6 @@ class Config:
                     print('The analysis will be terminated')
                     sys.exit(1)
 
-            # armazenando os resultados em um arquivo csv
             self.args['CSV_PATH'] = self.args['output'] + \
                 '{}_{}.out'.format(self.info, self.args['counter'])
             self.args['FIG_PATH'] = self.args['output'] + \

@@ -11,8 +11,8 @@ from subroutines.hdf5 import WriterMasks
 
 folder = {}
 
-folder['initial'] = 'crack_segmentation/'
-folder['main'] = folder['initial'] + ''
+folder['initial'] = 'surface_crack_detection/'
+folder['main'] = folder['initial'] + 'crack_segmentation/'
 
 # if folder['main'] == '', then the current working directory will be used
 if folder['main'] == '':
@@ -43,7 +43,6 @@ for (dType, images_path, masks_path, output_path) in dataset:
         output_path
     )
 
-    # percorrendo o caminho das imagens
     for (ii, (im_path, mask_path)) in enumerate(zip(images_path, masks_path)):
         image = cv2.imread(im_path)
 
