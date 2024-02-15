@@ -3,8 +3,8 @@ import os
 from config import Config
 
 folder = {}
-folder['initial'] = 'crack_segmentation/'
-folder['main'] = folder['initial'] + ''
+folder['initial'] = 'surface_crack_detection/'
+folder['main'] = folder['initial'] + 'crack_segmentation/'
 
 # if folder['main'] == '', then the current working directory will be used
 if folder['main'] == '':
