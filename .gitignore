@@ -167,5 +167,4 @@ inception
 resnet
 
 surface_crack_detection/models/historys
-crack_segmentation/output/*_3.*
 surface_crack_segmentation
