@@ -18,14 +18,14 @@ from keras.layers import Resizing
 dataset = pd.read_csv("dataset/dataset_final.csv")
 
 train_df, test_df = train_test_split(
-    dataset.sample(frac=1.0, random_state=42), train_size=0.80, random_state=42
+    dataset.sample(6000, random_state=42), train_size=0.80, random_state=42
 )
 
 train_data, valid_data, test_data = split_data(
     train_df, test_df, image_width=224, image_height=224, class_mode="categorical"
 )
 
-# modelo unet
+# modelo de segmentação unet
 unet_model = tf.keras.models.load_model(
     "surface_crack_detection/crack_segmentation/output/checkpoints/crack_detection_3_epoch_20_F1_score_dil_0.776.h5",
     custom_objects={
@@ -41,22 +41,19 @@ unet_model.load_weights(
     "surface_crack_detection/crack_segmentation/output/weights/crack_detection_1_epoch_9_F1_score_dil_0.812.h5"
 )
 
-# modelo unet
+# modelo de classificação cnn
 cnn_model = tf.keras.models.load_model(
-    "surface_crack_detection/crack_segmentation/ei_model/model.h5"
+    "surface_crack_detection/crack_segmentation/output/checkpoints/model99.h5"
 )
 
 # desativando as camadas de treino da unet
 for layer in unet_model.layers:
     layer.trainable = False
 
-# redimensionando a unet para 160x160
-resized_unet_output = Resizing(160, 160)(unet_model.output)
-unet_model_rgb = tf.keras.layers.Concatenate()(
-    [resized_unet_output, resized_unet_output, resized_unet_output]
-)
+# redimensionando a unet para 96x96
+resized_unet_output = Resizing(96, 96)(unet_model.output)
 
-cnn_output = cnn_model(unet_model_rgb)
+cnn_output = cnn_model(resized_unet_output)
 
 combined_model = tf.keras.models.Model(inputs=unet_model.input, outputs=cnn_output)
 
@@ -69,5 +66,5 @@ combined_model.summary()
 combined_model.fit(train_data, validation_data=valid_data, epochs=10)
 
 combined_model.save(
-    "surface_crack_detection/crack_segmentation/output/checkpoints/final_model.h5"
+    "surface_crack_detection/crack_segmentation/output/checkpoints/final_model_2.h5"
 )
