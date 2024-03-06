@@ -155,8 +155,8 @@ class Config:
                 '{}_summary_{}.txt'.format(self.info, self.args['counter'])
 
         elif self.mode == 'evaluate':
-            self.args['counter'] = 2
-            self.args['pretrained_filename'] = 'crack_detection_2_epoch_9_F1_score_dil_0.830'
+            self.args['counter'] = 4
+            self.args['pretrained_filename'] = 'crack_detection_4_epoch_87_F1_score_0.755'
             self.args['predictions_subfolder'] = '{}{}/'.format(
                 self.args['predictions'], self.args['pretrained_filename'])
             self.args['predictions_dilate'] = True
