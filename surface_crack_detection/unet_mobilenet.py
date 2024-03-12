@@ -11,7 +11,8 @@ dataset = pd.read_csv('../dataset/dataset_final.csv')
 dataset['Filepath'] = dataset['Filepath'].apply(lambda x: '../' + x)
 
 train_df, test_df = train_test_split(dataset.sample(6000, random_state=42), train_size=0.8, random_state=42)
-train_data, valid_data, test_data = split_data(train_df, test_df, image_width=224, image_height=224)
+train_data, valid_data, test_data = split_data(train_df, test_df, image_width=224, image_height=224,
+                                               class_mode='categorical')
 
 unet_model = tf.keras.models.load_model(
     'crack_segmentation/output/checkpoints/crack_detection_3_epoch_20_F1_score_dil_0.776.h5',
