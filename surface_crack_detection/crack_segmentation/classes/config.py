@@ -5,12 +5,12 @@ import sys
 class Config:
     def __init__(self, working_folder):
         self.working_folder = working_folder
-        self.mode = 'evaluate'  # 'train', 'evaluate' or 'build_data'
+        self.mode = 'train'  # 'train', 'evaluate' or 'build_data'
         self.info = 'crack_detection'
         self.IMAGE_DIMS = (224, 224, 3)
         self.batch_size = 4
-        self.epochs = 100
-        self.learning_rate = 0.0005
+        self.epochs = 50
+        self.learning_rate = 0.0001
 
         # The parameters of the configuration used will be stored in the dictionary args
         self.args = {}
@@ -46,7 +46,7 @@ class Config:
 
         self.args['binarize'] = True  # True or False
 
-        self.TEST_SIZE = 0.40
+        self.TEST_SIZE = 0.20
 
     def check_folder_exists(self, folder_path):
         """
