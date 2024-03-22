@@ -154,7 +154,7 @@ def plot_confusion_matrix(y_true, y_pred, labels=["Negative", "Positive"], title
 
     cm = confusion_matrix(y_true, y_pred)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
-    disp.plot(cmap=plt.cm.Blues)
+    disp.plot(cmap=plt.cm.Blues, colorbar=False)
     disp.ax_.set_title(title)
     disp.ax_.set_xlabel("Prediction")
     disp.ax_.set_ylabel("Real")
