@@ -12,3 +12,4 @@ from .loss_metrics import DilateMask
 from .loss_metrics import Recall_np
 from .loss_metrics import Precision_np
 from .loss_metrics import F1_score_np
+from .loss_metrics import compute_iou
