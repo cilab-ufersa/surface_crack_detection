@@ -4,7 +4,10 @@ import os
 
 
 def show_images(original_images, generated_masks, annotated_images, unet_images):
-    fig, axs = plt.subplots(4, 5, figsize=(12, 12))
+    plt.rcParams.update({'font.size': 12})
+    plt.tight_layout()
+
+    fig, axs = plt.subplots(4, 5, figsize=(10, 10))
 
     for i in range(5):
         axs[0, i].imshow(original_images[i])
@@ -23,12 +26,13 @@ def show_images(original_images, generated_masks, annotated_images, unet_images)
         axs[3, i].axis('off')
         axs[3, i].set_title(titles_unet[i])
 
-    fig.text(0.1, 0.8, 'Original Images', va='center', rotation='vertical')
-    fig.text(0.1, 0.6, 'Generated Masks', va='center', rotation='vertical')
-    fig.text(0.1, 0.4, 'Annotated Images', va='center', rotation='vertical')
-    fig.text(0.1, 0.2, 'U-Net Images', va='center', rotation='vertical')
+    fig.text(0.1, 0.8, 'Original', va='center', rotation='vertical')
+    fig.text(0.1, 0.6, 'SAM', va='center', rotation='vertical')
+    fig.text(0.1, 0.4, 'SAM Mask', va='center', rotation='vertical')
+    fig.text(0.1, 0.2, 'U-Net', va='center', rotation='vertical')
     
-
+    fig.savefig('best_images/image_grid.eps', format='eps', dpi=300, bbox_inches='tight')
+    
     plt.show()
     
 def load_images_from_folder(folder):
@@ -52,10 +56,10 @@ annotated_images = load_images_from_folder(annotated_images_path)
 unet_images = load_images_from_folder(unet_masks_path)
 
 metrics_sam_mask = [0.9635, 0.9541, 0.9423, 0.9401, 0.9415]
-titles_sam_mask = ['IoU mean: {:.4f}'.format(sam) for sam in metrics_sam_mask]
+titles_sam_mask = ['IoU: {:.4f}'.format(sam) for sam in metrics_sam_mask]
 
 metrics_unet = [0.8400, 0.8544, 0.8307, 0.8072, 0.4781]
-titles_unet = ['IoU mean: {:.4f}'.format(sam) for sam in metrics_unet]
+titles_unet = ['IoU: {:.4f}'.format(sam) for sam in metrics_unet]
 
 
 
