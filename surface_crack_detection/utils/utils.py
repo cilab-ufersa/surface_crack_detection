@@ -1,11 +1,12 @@
 # bibliotecas necessárias
 import pandas as pd
 from pathlib import Path
-from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
 import tensorflow as tf
 
-def generate_df(image_dir, label):
 
+def generate_df(image_dir, label):
     """
     Gera um dataframe com os dados das imagens
 
@@ -16,16 +17,17 @@ def generate_df(image_dir, label):
     Returns:
         df (pd.DataFrame): dataframe com os dados das imagens
     """
-    
-    filepaths = pd.Series(list(image_dir.glob(r'*.jpg')), name='Filepath').astype(str)
-    labels = pd.Series(label, name='Label', index=filepaths.index) 
+
+    filepaths = pd.Series(list(image_dir.glob(r"*.jpg")), name="Filepath").astype(str)
+    labels = pd.Series(label, name="Label", index=filepaths.index)
     df = pd.concat([filepaths, labels], axis=1)
-    
+
     return df
 
 
-
-def save_dataset(paths=["dataset/Positive", "dataset/Negative"], filename="dataset_final.csv"):
+def save_dataset(
+    paths=["dataset/Positive", "dataset/Negative"], filename="dataset_final.csv"
+):
     """
     Salva o dataset em um arquivo csv
 
@@ -40,18 +42,30 @@ def save_dataset(paths=["dataset/Positive", "dataset/Negative"], filename="datas
     positive_dir = Path(paths[0])
     negative_dir = Path(paths[1])
 
-    positive_df = generate_df(positive_dir, label = 'POSITIVE')
-    negative_df = generate_df(negative_dir, label = "NEGATIVE") 
+    positive_df = generate_df(positive_dir, label="POSITIVE")
+    negative_df = generate_df(negative_dir, label="NEGATIVE")
 
-    dataset = pd.concat([positive_df, negative_df], axis = 0).sample(frac = 1.0, random_state = 1).reset_index(drop=True)
-    dataset.to_csv(filename, index = False)
+    dataset = (
+        pd.concat([positive_df, negative_df], axis=0)
+        .sample(frac=1.0, random_state=1)
+        .reset_index(drop=True)
+    )
+    dataset.to_csv(filename, index=False)
 
     return dataset
 
-def split_data(train_df, test_df, image_width=227,
-                image_height=227, image_channels=255.0, 
-                classes_names=['Sem fissura', 'Com fissura'], class_mode='binary', validation_split=0.2, preprocess_input=None):
-    
+
+def split_data(
+    train_df,
+    test_df,
+    image_width=227,
+    image_height=227,
+    image_channels=255.0,
+    classes_names=["Sem fissura", "Com fissura"],
+    class_mode="binary",
+    validation_split=0.2,
+    preprocess_input=None,
+):
     """
     Divide o dataset em treino, validação e teste
 
@@ -72,47 +86,49 @@ def split_data(train_df, test_df, image_width=227,
         test_data (pd.DataFrame): dataframe com os dados das imagens de teste
     """
 
-
     image_size = (image_width, image_height)
 
-
     train_gen = tf.keras.preprocessing.image.ImageDataGenerator(
-        rescale=1./image_channels, validation_split=validation_split, preprocessing_function=preprocess_input)
+        rescale=1.0 / image_channels,
+        validation_split=validation_split,
+        preprocessing_function=preprocess_input,
+    )
     test_gen = tf.keras.preprocessing.image.ImageDataGenerator(
-        rescale=1./image_channels, preprocessing_function=preprocess_input)
+        rescale=1.0 / image_channels, preprocessing_function=preprocess_input
+    )
 
     train_data = train_gen.flow_from_dataframe(
         train_df,
-        x_col='Filepath',
-        y_col='Label',
+        x_col="Filepath",
+        y_col="Label",
         target_size=image_size,
-        color_mode='rgb',
+        color_mode="rgb",
         class_mode=class_mode,
         batch_size=32,
         shuffle=False,
         seed=42,
-        subset="training"
+        subset="training",
     )
 
     valid_data = train_gen.flow_from_dataframe(
         train_df,
-        x_col='Filepath',
-        y_col='Label',
+        x_col="Filepath",
+        y_col="Label",
         target_size=image_size,
-        color_mode='rgb',
+        color_mode="rgb",
         class_mode=class_mode,
         batch_size=32,
         shuffle=False,
         seed=42,
-        subset="validation"
+        subset="validation",
     )
 
     test_data = test_gen.flow_from_dataframe(
         test_df,
-        x_col='Filepath',
-        y_col='Label',
+        x_col="Filepath",
+        y_col="Label",
         target_size=image_size,
-        color_mode='rgb',
+        color_mode="rgb",
         class_mode=class_mode,
         batch_size=32,
         shuffle=False,
@@ -120,3 +136,27 @@ def split_data(train_df, test_df, image_width=227,
     )
 
     return train_data, valid_data, test_data
+
+
+def plot_confusion_matrix(y_true, y_pred, labels=["Negative", "Positive"], title=""):
+    """
+    Plota a matriz de confusão
+
+    Args:
+        y_true (np.array): array com os valores reais
+        y_pred (np.array): array com os valores previstos
+        labels (list): lista com os nomes das classes
+        title (str): título do gráfico
+
+    Returns:
+        disp (ConfusionMatrixDisplay): matriz de confusão
+    """
+
+    cm = confusion_matrix(y_true, y_pred)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
+    disp.plot(cmap=plt.cm.Blues, colorbar=False)
+    disp.ax_.set_title(title)
+    disp.ax_.set_xlabel("Prediction")
+    disp.ax_.set_ylabel("Real")
+
+    return disp
