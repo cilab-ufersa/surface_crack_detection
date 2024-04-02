@@ -9,6 +9,7 @@ __pycache__/
 *.hdf5
 *.json
 # Distribution / packaging
+.idea
 .Python
 build/
 develop-eggs/
