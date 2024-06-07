@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 # pasta onde estão as imagens
-path = 'SteelDefect/data'
+path = 'wood'
 
 
 # lista de imagens
@@ -17,10 +17,12 @@ plt.figsize=(15, 10)
 # exibir apenas 1x10 imagens e salvar
 fig, ax = plt.subplots(1, 10, figsize=(15, 10))
 for j in range(10):
-    image = cv2.imread(os.path.join(path, images[j+7]))
+    image = cv2.imread(os.path.join(path, images[j+6]))
+    # rotate image
+    image = np.rot90(image, 3)
     h, w, _ = image.shape
     if h > w:
-        image = image[:w, :]
+        image = image[:h, :]
     else:
         image = image[:, :h]
     ax[j].imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
