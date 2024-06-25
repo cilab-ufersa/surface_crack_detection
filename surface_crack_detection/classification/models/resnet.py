@@ -11,7 +11,7 @@ import tensorflow as tf
 import pickle
 
 # load dataset
-dataset = pd.read_csv('surface_crack_detection/classification/dataset_binary/dataset_final.csv')
+dataset = pd.read_csv('surface_crack_detection/classification/masks_dataset/dataset_final.csv')
 
 # split dataset
 train_df, test_df = train_test_split(dataset.sample(
@@ -110,13 +110,13 @@ print(f"\nmodel's loss: {(loss*100):0.2f}%")
 # creating confunsion matrix
 matrix = confusion_matrix(test_data.labels, predictions)
 classification = classification_report(
-    test_data.labels, predictions, target_names=["ISOLATED", "DISSEMINATED"])
+    test_data.labels, predictions, target_names=["DISSEMINATED", "ISOLATED"])
 display = ConfusionMatrixDisplay(matrix)
 
 display.plot()
 
-plt.xticks(ticks=np.arange(2), labels=["ISOLATED", "DISSEMINATED"])
-plt.yticks(ticks=np.arange(2), labels=["ISOLATED", "DISSEMINATED"])
+plt.xticks(ticks=np.arange(2), labels=["DISSEMINATED", "ISOLATED"])
+plt.yticks(ticks=np.arange(2), labels=["DISSEMINATED", "ISOLATED"])
 
 plt.ylabel('Actual')
 plt.xlabel('Predict')
