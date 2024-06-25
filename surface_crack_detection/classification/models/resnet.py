@@ -9,9 +9,26 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import pickle
+from sklearn.utils import resample
 
 # load dataset
 dataset = pd.read_csv('surface_crack_detection/classification/masks_dataset/dataset_final.csv')
+
+# split the dataset into isolated and disseminated classes
+dataset_isolated = dataset[dataset.Label == 'Isolated']
+dataset_disseminated = dataset[dataset.Label == 'Disseminated']
+
+# upsample the disseminated class
+disseminated_upsampled = resample(dataset_disseminated,
+                                    replace=True,
+                                    n_samples=len(dataset_isolated),
+                                    random_state=123)
+
+
+# combine the upsampled disseminated class with the isolated class
+df_upsampled = pd.concat([dataset_isolated, disseminated_upsampled])
+
+dataset = df_upsampled
 
 # split dataset
 train_df, test_df = train_test_split(dataset.sample(
@@ -23,6 +40,7 @@ preprocess_input = tf.keras.applications.resnet.preprocess_input
 # train, validation and test datas
 train_data, valid_data, test_data = split_data(
     train_df, test_df, image_channels=1.0, preprocess_input=preprocess_input)
+
 
 class MyCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs={}):
