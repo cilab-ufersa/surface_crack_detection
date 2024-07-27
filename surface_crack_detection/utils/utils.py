@@ -26,7 +26,7 @@ def generate_df(image_dir, label):
 
 
 def save_dataset(
-    paths=["dataset/Positive", "dataset/Negative"], filename="dataset_final.csv"
+        paths=["dataset/Positive", "dataset/Negative"], filename="dataset_final.csv"
 ):
     """
     Salva o dataset em um arquivo csv
@@ -56,15 +56,15 @@ def save_dataset(
 
 
 def split_data(
-    train_df,
-    test_df,
-    image_width=227,
-    image_height=227,
-    image_channels=255.0,
-    classes_names=["Sem fissura", "Com fissura"],
-    class_mode="binary",
-    validation_split=0.2,
-    preprocess_input=None,
+        train_df,
+        test_df,
+        image_width=227,
+        image_height=227,
+        image_channels=255.0,
+        classes_names=["Sem fissura", "Com fissura"],
+        class_mode="binary",
+        validation_split=0.2,
+        preprocess_input=None,
 ):
     """
     Divide o dataset em treino, validação e teste
@@ -154,9 +154,45 @@ def plot_confusion_matrix(y_true, y_pred, labels=["Negative", "Positive"], title
 
     cm = confusion_matrix(y_true, y_pred)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
-    disp.plot(cmap=plt.cm.Blues, colorbar=False)
+    fig, ax = plt.subplots(figsize=(3, 3))
+    disp.plot(ax=ax, cmap=plt.cm.Blues, colorbar=False)
+    plt.tight_layout()
     disp.ax_.set_title(title)
     disp.ax_.set_xlabel("Prediction")
     disp.ax_.set_ylabel("Real")
 
     return disp
+
+
+def generate_tensor(dataset, image_size, preprocess_input=None, class_mode="binary", image_channels=255.0):
+    """
+    Gera um tensor com as imagens
+
+    Args:
+        dataset (pd.DataFrame): dataframe com os dados das imagens
+        image_size (tuple): tamanho da imagem
+        preprocess_input (None | list): preprocessa um tensor ou um array Numpy que codifica um lote de imagens
+        class_mode (str): modo de classificação, binário ou categórico
+        image_channels (int): número de canais da imagem
+
+    Returns:
+        tensor (tf.Tensor): tensor com as imagens
+    """
+
+    gen = tf.keras.preprocessing.image.ImageDataGenerator(
+        rescale=1.0 / image_channels, preprocessing_function=preprocess_input
+    )
+
+    tensor = gen.flow_from_dataframe(
+        dataset,
+        x_col="Filepath",
+        y_col="Label",
+        target_size=image_size,
+        color_mode="rgb",
+        class_mode=class_mode,
+        batch_size=32,
+        shuffle=False,
+        seed=42
+    )
+
+    return tensor
