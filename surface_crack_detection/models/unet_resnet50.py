@@ -6,7 +6,7 @@ import tensorflow as tf
 import pandas as pd
 
 from sklearn.model_selection import train_test_split
-from subroutines.loss_metrics import (
+from crack_segmentation.subroutines.loss_metrics import (
     Weighted_Cross_Entropy,
     F1_score,
     Precision_dil,

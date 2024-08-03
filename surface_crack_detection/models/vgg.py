@@ -72,7 +72,7 @@ test_generator = test_datagen.flow_from_dataframe(
     )
 
 # creating VGG16 model's instances from pre-trained weights
-local_wights_file = "surface_crack_detection/vgg16/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5"
+local_wights_file = "surface_crack_detection/models/weights/vgg16/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5"
 pre_trained_model = VGG(input_shape = (150, 150, 3), include_top = False, weights = None)
 pre_trained_model.load_weights(local_wights_file)
 

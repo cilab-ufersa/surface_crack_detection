@@ -1,12 +1,13 @@
+import sys
+sys.path.append('surface_crack_detection')
 import tensorflow as tf
 import pandas as pd
 import numpy as np
-
 from sklearn.model_selection import train_test_split
 from crack_segmentation.subroutines.loss_metrics import (Weighted_Cross_Entropy, F1_score, F1_score_dil, Precision_dil)
 from utils.utils import split_data
 
-dataset = pd.read_csv('../dataset/dataset_final.csv')
+dataset = pd.read_csv('dataset/dataset_final.csv')
 
 dataset['Filepath'] = dataset['Filepath'].apply(lambda x: '../' + x)
 

@@ -32,15 +32,33 @@ What things you need to have to be able to run:
 
 ### Running the project
 
-Segmentation of the image:
+#### Training the model
+You can train your own model (classification or segmentation) by running the script below.
+Each script is associated with a different model.
 
+| Type of model  | Model          | Script                                                                      |
+|----------------|----------------|-----------------------------------------------------------------------------|
+| Classification | Resnet50       | python surface_crack_detection/models/resnet.py                             |
+| Classification | VGG16          | python surface_crack_detection/models/vgg.py                                |
+| Classification | InceptionV3    | python surface_crack_detection/models/inception.py                          |
+| Segmentation | U-Net          | python surface_crack_detection/crack_segmentation/classes/train_evaluate.py |
+| Segmentation and Classification | U-Net-Resnet50 | python surface_crack_detection/crack_segmentation/unet_resnet50.py          |
+| Segmentation and Classification | U-Net-Mobilnet | python surface_crack_detection/models/unet_mobilenet.py                     |
+
+
+#### Getting prediction
+In case you just want to segment and classify an image with our trained model:
+1. You must set the input directory that contains the images.
+2. You can change the output directory, but by default the images will save in *surface_crack_detection/image_output* directory. (optional)
+3. Run the script
 ```bash
-    $ python unet_resnet50.py
+$ python surface_crack_detection/models/model_predictions.py
 ```
+By default, we use U-Net-Mobilenet model. The output of this script will save the segmented image on your device and classify it as either having a crack or not.
 
 
+![input image.png](readme_image/input_image.png)
 
-![Figure](/dataset/result.png)
 
 ##  Publications related to this project
 
