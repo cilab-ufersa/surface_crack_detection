@@ -42,7 +42,7 @@ Each script is associated with a different model.
 | Classification | VGG16          | python surface_crack_detection/models/vgg.py                                |
 | Classification | InceptionV3    | python surface_crack_detection/models/inception.py                          |
 | Segmentation | U-Net          | python surface_crack_detection/crack_segmentation/classes/train_evaluate.py |
-| Segmentation and Classification | U-Net-Resnet50 | python surface_crack_detection/crack_segmentation/unet_resnet50.py          |
+| Segmentation and Classification | U-Net-Resnet50 | python surface_crack_detection/models/unet_resnet50.py                      |
 | Segmentation and Classification | U-Net-Mobilnet | python surface_crack_detection/models/unet_mobilenet.py                     |
 
 
