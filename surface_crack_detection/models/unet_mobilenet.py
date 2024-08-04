@@ -26,7 +26,7 @@ unet_model = tf.keras.models.load_model(
 
 unet_model.load_weights('crack_segmentation/output/weights/crack_detection_1_epoch_9_F1_score_dil_0.812.h5')
 
-cnn_model = tf.keras.models.load_model('crack_segmentation/output/checkpoints/model99.h5')
+cnn_model = tf.keras.models.load_model('surface_crack_detection/models/trained/mobilenet_model.h5')
 
 for layer in unet_model.layers:
     layer.trainable = False
