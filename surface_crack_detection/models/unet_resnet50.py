@@ -73,5 +73,5 @@ combined_model.summary()
 combined_model.fit(train_data, validation_data=valid_data, epochs=50)
 
 combined_model.save(
-    "surface_crack_detection/crack_segmentation/output/checkpoints/unet_resnet50.h5"
+    "surface_crack_detection/models/trained/unet_resnet50.h5"
 )

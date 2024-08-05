@@ -9,14 +9,12 @@ from utils.utils import split_data
 
 dataset = pd.read_csv('dataset/dataset_final.csv')
 
-dataset['Filepath'] = dataset['Filepath'].apply(lambda x: '../' + x)
-
 train_df, test_df = train_test_split(dataset.sample(6000, random_state=42), train_size=0.8, random_state=42)
 train_data, valid_data, test_data = split_data(train_df, test_df, image_width=224, image_height=224,
                                                class_mode='categorical')
 
 unet_model = tf.keras.models.load_model(
-    'crack_segmentation/output/checkpoints/crack_detection_3_epoch_20_F1_score_dil_0.776.h5',
+    'surface_crack_detection/crack_segmentation/output/checkpoints/crack_detection_3_epoch_20_F1_score_dil_0.776.h5',
     custom_objects={
         'loss': Weighted_Cross_Entropy(10),
         'F1_score': F1_score,
@@ -24,7 +22,7 @@ unet_model = tf.keras.models.load_model(
         'Precision_dil': Precision_dil
     })
 
-unet_model.load_weights('crack_segmentation/output/weights/crack_detection_1_epoch_9_F1_score_dil_0.812.h5')
+unet_model.load_weights('surface_crack_detection/crack_segmentation/output/weights/crack_detection_1_epoch_9_F1_score_dil_0.812.h5')
 
 cnn_model = tf.keras.models.load_model('surface_crack_detection/models/trained/mobilenet_model.h5')
 
@@ -44,4 +42,4 @@ combined_model.compile(optimizer, loss='categorical_crossentropy', metrics=['acc
 
 combined_model.fit(train_data, validation_data=valid_data, epochs=10)
 
-combined_model.save('crack_segmentation/output/checkpoints/unet_mobilenet.h5')
+combined_model.save('surface_crack_detection/models/trained/unet_mobilenet.h5')
