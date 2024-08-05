@@ -47,7 +47,7 @@ Each script is associated with a different model.
 | Segmentation and Classication | SAM-Resnet50 | python surface_crack_detection/models/sam_resnet50.py |
 
 #### Getting prediction
-In case you just want to segment and classify an image with our trained model:
+If you want to segment and classify an image with our trained model:
 1. You must set the input directory that contains the images.
 2. You can change the output directory, but by default the images will save in *surface_crack_detection/image_output* directory. (optional)
 3. Run the script
