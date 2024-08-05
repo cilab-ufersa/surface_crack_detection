@@ -1,3 +1,5 @@
+import sys
+sys.path.append("surface_crack_detection")
 import numpy as np
 import pandas as pd
 import pickle
@@ -7,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from utils.utils import split_data
 
 
-dataset = pd.read_csv('') # Path to the dataset
+dataset = pd.read_csv('dataset/segmented_dataset_final.csv') # Path to the dataset
 
 train_df, test_df = train_test_split(dataset.sample(frac=1.0, random_state=42), test_size=0.2, random_state=42)
 
