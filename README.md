@@ -46,6 +46,23 @@ Each script is associated with a different model.
 | Segmentation and Classification | U-Net-Mobilnet | python surface_crack_detection/models/unet_mobilenet.py                     |
 | Segmentation and Classication | SAM-Resnet50 | python surface_crack_detection/models/sam_resnet50.py |
 
+We have more three models that classify a crack image in isolated or disseminated:
+
+- CNN model:
+````bash
+$ python surface_crack_detection/classification/models/cnn.py
+````
+
+- InceptionV3 model:
+````bash
+$ python surface_crack_detection/classification/models/inception.py
+````
+
+- ResNet50 model:
+````bash
+$ python surface_crack_detection/classification/models/resnet.py
+````
+
 #### Getting prediction
 If you want to segment and classify an image with our trained model:
 1. You must set the input directory that contains the images.

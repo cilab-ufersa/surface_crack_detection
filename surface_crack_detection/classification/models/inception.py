@@ -10,7 +10,7 @@ import numpy as np
 import tensorflow as tf
 
 #load dataset
-dataset = pd.read_csv('surface_crack_detection/classification/dataset_binary/dataset_final.csv')
+dataset = pd.read_csv('surface_crack_detection/classification/masks_dataset/dataset_final.csv')
 
 # split dataset
 train_df, test_df = train_test_split(
@@ -21,7 +21,7 @@ train_data, valid_data, test_data = split_data(train_df, test_df)
 print(f"Total de imagens de treino: {train_data.samples}, Total de imagens de validação: {valid_data.samples}, Total de imagens de teste: {test_data.samples}")
 
 # load the path to weights file
-load_weights_file = 'surface_crack_detection/classification/models/weights/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5'
+load_weights_file = 'surface_crack_detection/models/weights/inception/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5'
 
 # using the inceptionV3 architecture
 base_model = tf.keras.applications.inception_v3.InceptionV3(
