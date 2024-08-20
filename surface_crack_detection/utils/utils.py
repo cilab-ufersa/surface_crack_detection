@@ -18,7 +18,7 @@ def generate_df(image_dir, label):
         df (pd.DataFrame): dataframe com os dados das imagens
     """
 
-    filepaths = pd.Series(list(image_dir.glob(r"*.jpg")), name="Filepath").astype(str)
+    filepaths = pd.Series(list(image_dir.glob(r"*.png")), name="Filepath").astype(str)
     labels = pd.Series(label, name="Label", index=filepaths.index)
     df = pd.concat([filepaths, labels], axis=1)
 
@@ -26,7 +26,8 @@ def generate_df(image_dir, label):
 
 
 def save_dataset(
-        paths=["dataset/Positive", "dataset/Negative"], filename="dataset_final.csv"
+        # paths=["dataset/Positive", "dataset/Negative"], filename="dataset_final.csv"
+        paths, filename, first_label, second_label
 ):
     """
     Salva o dataset em um arquivo csv
@@ -42,8 +43,8 @@ def save_dataset(
     positive_dir = Path(paths[0])
     negative_dir = Path(paths[1])
 
-    positive_df = generate_df(positive_dir, label="POSITIVE")
-    negative_df = generate_df(negative_dir, label="NEGATIVE")
+    positive_df = generate_df(positive_dir, label=first_label)
+    negative_df = generate_df(negative_dir, label=second_label)
 
     dataset = (
         pd.concat([positive_df, negative_df], axis=0)
