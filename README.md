@@ -30,6 +30,12 @@ What things you need to have to be able to run:
     $ pip install -r requirements.txt
 ```
 
+If you want to use Segmentation Anything Model (SAM), you must create another virtual environment:
+
+```bash
+    $ pip install -r requirements-torch.txt
+```
+
 ### Running the project
 
 #### Training the model
@@ -49,19 +55,19 @@ Each script is associated with a different model.
 We have more three models that classify a crack image in isolated or disseminated:
 
 - CNN model:
-````bash
-$ python surface_crack_detection/classification/models/cnn.py
-````
+```bash
+    $ python surface_crack_detection/classification/models/cnn.py
+```
 
 - InceptionV3 model:
-````bash
-$ python surface_crack_detection/classification/models/inception.py
-````
+```bash
+    $ python surface_crack_detection/classification/models/inception.py
+```
 
 - ResNet50 model:
-````bash
-$ python surface_crack_detection/classification/models/resnet.py
-````
+```bash
+    $ python surface_crack_detection/classification/models/resnet.py
+```
 
 #### Getting prediction
 If you want to segment and classify an image with our trained model:
@@ -69,7 +75,7 @@ If you want to segment and classify an image with our trained model:
 2. You can change the output directory, but by default the images will save in *surface_crack_detection/image_output* directory. (optional)
 3. Run the script
 ```bash
-$ python surface_crack_detection/models/model_predictions.py
+    $ python surface_crack_detection/models/model_predictions.py
 ```
 By default, we use U-Net-Mobilenet model. The output of this script will save the segmented image on your device and classify it as either having a crack or not.
 
