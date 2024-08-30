@@ -38,7 +38,8 @@ If you want to use Segmentation Anything Model (SAM), you must create another vi
 
 ### Running the project
 
-#### Training the model
+**Training the model**
+
 You can train your own model (classification or segmentation) by running the script below.
 Each script is associated with a different model.
 
@@ -70,18 +71,26 @@ We have more three models that classify a crack image in isolated or disseminate
 ```
 
 #### Getting prediction
+**U-Net-MobileNet**
+
 If you want to segment and classify an image with our trained model:
 1. You must set the input directory that contains the images.
 2. You can change the output directory, but by default the images will save in *surface_crack_detection/image_output* directory. (optional)
-3. Run the script
+3. Run the script:
 ```bash
     $ python surface_crack_detection/models/model_predictions.py
 ```
 By default, we use U-Net-Mobilenet model. The output of this script will save the segmented image on your device and classify it as either having a crack or not.
 
+**Classification models**
 
-![input image.png](readme_image/input_image.png)
+You can also input an image and see whether it has a crack (positive) or not (negative) by running the script below:
+```bash
+    $ python ./surface_crack_detection/predictions.py <model_name> <image_path>
+```
+Models available: cnn, inception, resnet50 and vgg.
 
+#### 
 
 ##  Publications related to this project
 
