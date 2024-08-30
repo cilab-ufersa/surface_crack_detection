@@ -24,10 +24,14 @@ def classify(model_name, img_path):
 
         # Preprocess image
         img = np.expand_dims(img, axis=0)
-        img = img / 255.0
 
         # Make prediction
-        y_pred = np.argmax(model.predict(img), axis=-1)
+        if model_name == "resnet50":
+            y_pred = np.argmax(model.predict(img), axis=1)
+        else:
+            img = img / 255.0
+            y_pred = np.squeeze(model.predict(img) >= 0.5).astype(np.int32)
+            y_pred = y_pred.reshape(-1, 1)
 
         # Print results
         print(f"modelo: {model_name}")
