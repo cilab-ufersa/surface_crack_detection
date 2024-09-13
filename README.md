@@ -82,6 +82,9 @@ If you want to segment and classify an image with our trained model:
 ```
 By default, we use U-Net-Mobilenet model. The output of this script will save the segmented image on your device and classify it as either having a crack or not.
 
+![segmentation.png](surface_crack_detection/images/readme/segmentation.png)
+
+
 **Classification models**
 
 You can also input an image and see whether it has a crack (positive) or not (negative) by running the script below:
