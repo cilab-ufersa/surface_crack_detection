@@ -30,9 +30,16 @@ What things you need to have to be able to run:
     $ pip install -r requirements.txt
 ```
 
+If you want to use Segmentation Anything Model (SAM), you must create another virtual environment:
+
+```bash
+    $ pip install -r requirements-torch.txt
+```
+
 ### Running the project
 
-#### Training the model
+**Training the model**
+
 You can train your own model (classification or segmentation) by running the script below.
 Each script is associated with a different model.
 
@@ -46,19 +53,47 @@ Each script is associated with a different model.
 | Segmentation and Classification | U-Net-Mobilnet | python surface_crack_detection/models/unet_mobilenet.py                     |
 | Segmentation and Classication | SAM-Resnet50 | python surface_crack_detection/models/sam_resnet50.py |
 
+We have more three models that classify a crack image in isolated or disseminated:
+
+- CNN model:
+```bash
+    $ python surface_crack_detection/classification/models/cnn.py
+```
+
+- InceptionV3 model:
+```bash
+    $ python surface_crack_detection/classification/models/inception.py
+```
+
+- ResNet50 model:
+```bash
+    $ python surface_crack_detection/classification/models/resnet.py
+```
+
 #### Getting prediction
+**U-Net-MobileNet**
+
 If you want to segment and classify an image with our trained model:
 1. You must set the input directory that contains the images.
 2. You can change the output directory, but by default the images will save in *surface_crack_detection/image_output* directory. (optional)
-3. Run the script
+3. Run the script:
 ```bash
-$ python surface_crack_detection/models/model_predictions.py
+    $ python surface_crack_detection/models/model_predictions.py
 ```
 By default, we use U-Net-Mobilenet model. The output of this script will save the segmented image on your device and classify it as either having a crack or not.
 
+![segmentation.png](surface_crack_detection/images/readme/segmentation.png)
 
-![input image.png](readme_image/input_image.png)
 
+**Classification models**
+
+You can also input an image and see whether it has a crack (positive) or not (negative) by running the script below:
+```bash
+    $ python ./surface_crack_detection/predictions.py <model_name> <image_path>
+```
+Models available: cnn, inception, resnet50 and vgg.
+
+#### 
 
 ##  Publications related to this project
 
