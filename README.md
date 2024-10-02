@@ -97,4 +97,7 @@ Models available: cnn, inception, resnet50 and vgg.
 
 ##  Publications related to this project
 
+H. C. Dantas, L. M. G. Morais, P. H. A. Bezerra and R. C. B. Rego, "[Concrete Crack Detection Using Embedded Machine Learning](https://ieeexplore.ieee.org/document/10693377)," 2024 8th International Symposium on Instrumentation Systems, Circuits and Transducers (INSCIT), Joao Pessoa, Brazil, 2024, pp. 1-6, doi: 10.1109/INSCIT62583.2024.10693377. 
+
+
 Bezerra, P. H. A., H. C. Dantas, L. M. G. Morais, and R. C. B. Rego. ["A Deep Learning Artificial Intelligence Algorithm to Detect Cracks on Civil Engineering Building Elements."](https://github.com/cilab-ufersa/surface_crack_detection/blob/develop/surface_crack_detection/CINPAR2024.pdf) In: XX International Conference on Building Pathology and Constructions Repair, 2024, Fortaleza. *XX International Conference on Building Pathology and Constructions Repair*. Fortaleza/CE, 2024. v. 1.
